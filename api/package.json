@@ -1,0 +1,9 @@
+{
+  "name": "m-division-lighting-backend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "stripe": "^17.0.0",
+    "@vercel/kv": "^2.0.0"
+  }
+}
