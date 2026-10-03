@@ -96,7 +96,7 @@ export default async function handler(req, res) {
       // Shows up in Stripe Dashboard → this order, so you can manually track
       // and confirm the "first 10" free-install claims.
             customer_email: (shipData && shipData.email) || undefined,
-      metadata: {
+            payment_intent_data: { metadata: {
         local_pickup: isPickup ? 'yes' : 'no',
         free_install_requested: installGranted ? 'yes' : 'no',
         customer_name: String((shipData && shipData.name) || ''),
@@ -105,7 +105,7 @@ export default async function handler(req, res) {
         ship_city: String((shipData && shipData.city) || ''),
         ship_zip: String((shipData && shipData.zip) || ''),
         ship_country: String((shipData && shipData.country) || ''),
-      },
+            } },
       success_url: 'https://www.mdivisionlighting.com/?success=true&session_id={CHECKOUT_SESSION_ID}',
       cancel_url: 'https://www.mdivisionlighting.com/?canceled=true',
     });
