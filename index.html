@@ -803,7 +803,7 @@ function goToPayment(){
 // ---- Payment processor wiring (Stripe Checkout: card + PayPal + wallets) ----
 // After deploying the included backend (see setup-notes.md), replace this with
 // your deployed endpoint, e.g. "https://your-project.vercel.app/api/create-checkout-session"
-const BACKEND_URL = "https://mdivisionlighting.com/api/create-checkout-session";
+const BACKEND_URL = window.location.origin + "/api/create-checkout-session";
 
 const COUNTRY_CODES = {
   'United States':'US','Canada':'CA','Mexico':'MX','United Kingdom':'GB',
