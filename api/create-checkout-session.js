@@ -13,8 +13,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Launch pricing window — mirrors the deadline in m-division-lighting.html.
 // Keep these two in sync (same timestamp) so the price shown on the page
 // always matches what actually gets charged.
-const LAUNCH_END = new Date("2026-09-28T23:59:59-07:00").getTime(); // 11:59 PM Pacific
-const launchActive = () => Date.now() < LAUNCH_END;
+const LAUNCH_START = new Date("2026-10-12T12:00:00-07:00").getTime(); // Monday 12:00pm Pacific
+const LAUNCH_END = new Date("2026-10-19T12:00:00-07:00").getTime();   // 7 days later
+const launchActive = () => { const now = Date.now(); return now >= LAUNCH_START && now < LAUNCH_END; };
 
 // Prices in cents — source of truth lives on the server, not the browser.
 const PRICES_CENTS = launchActive()
@@ -29,8 +30,8 @@ const NA_COUNTRIES = ['US', 'CA', 'MX'];
 const INTL_SHIPPING_CENTS = { GB: 1200, DE: 1400, FR: 1400, AU: 1800, DEFAULT: 2000 };
 
 export default async function handler(req, res) {
-  // CORS: allow your storefront domain to call this endpoint.
-  res.setHeader('Access-Control-Allow-Origin', '*'); // tighten to your domain before going live
+  // CORS: only your own storefront domain may call this endpoint.
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.mdivisionlighting.com');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -84,6 +85,16 @@ export default async function handler(req, res) {
       mode: 'payment',
       line_items,
       payment_method_types: ['card'],
+      // Prefill the email the customer already typed, so Stripe's own page
+      // doesn't ask them to type it again.
+      customer_email: (shipData && shipData.email) ? String(shipData.email).slice(0, 200) : undefined,
+      // For shipped orders, Stripe itself collects the real shipping
+      // address on its hosted page (the only address we actually trust —
+      // the site's own address fields are just for the shipping estimate).
+      // Local pickup orders skip this since there's nothing to ship.
+      ...(isPickup ? {} : {
+        shipping_address_collection: { allowed_countries: ['US', 'CA', 'MX', 'GB', 'DE', 'FR', 'AU'] },
+      }),
       shipping_options: [
         {
           shipping_rate_data: {
@@ -94,20 +105,16 @@ export default async function handler(req, res) {
         },
       ],
       // Shows up in Stripe Dashboard → this order, so you can manually track
-      // and confirm the "first 10" free-install claims.
-            customer_email: (shipData && shipData.email) || undefined,
-            payment_intent_data: { metadata: {
+      // and confirm the "first 10" free-install claims, and cross-check the
+      // customer's name/phone against the address Stripe collected.
+      metadata: {
         local_pickup: isPickup ? 'yes' : 'no',
         free_install_requested: installGranted ? 'yes' : 'no',
-        customer_name: String((shipData && shipData.name) || ''),
-        customer_email: String((shipData && shipData.email) || ''),
-        ship_address: String((shipData && shipData.address) || ''),
-        ship_city: String((shipData && shipData.city) || ''),
-        ship_zip: String((shipData && shipData.zip) || ''),
-        ship_country: String((shipData && shipData.country) || ''),
-            } },
-      success_url: 'https://www.mdivisionlighting.com/?success=true&session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: 'https://www.mdivisionlighting.com/?canceled=true',
+        customer_name: shipData && shipData.name ? String(shipData.name).slice(0, 100) : '',
+        customer_phone: shipData && shipData.phone ? String(shipData.phone).slice(0, 40) : '',
+      },
+      success_url: `${req.headers.origin}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/?canceled=true`,
     });
 
     return res.status(200).json({ url: session.url });

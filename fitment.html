@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fitment — Will It Fit Your BMW? | M///Division Lighting</title>
+<meta name="description" content="Full compatibility table for M///Division puddle lights: 2, 3, 4, 5, 8 Series and X1-X7 SUVs with the factory 2-pin connector.">
+<link rel="canonical" href="https://www.mdivisionlighting.com/fitment.html">
+<link rel="icon" type="image/png" href="images/favicon-32.png">
+<link rel="apple-touch-icon" href="images/favicon-32.png">
+<meta property="og:title" content="Fitment — Will It Fit Your BMW? | M///Division Lighting">
+<meta property="og:description" content="Full compatibility table for M///Division puddle lights: 2, 3, 4, 5, 8 Series and X1-X7 SUVs with the factory 2-pin connector.">
+<meta property="og:image" content="images/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.mdivisionlighting.com/fitment.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#07080A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="announce">Free shipping across North America &middot; Plug and play, no cutting or splicing &middot; Local pickup in Vancouver</div>
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="images/logo-icon.png" alt="M///Division Lighting" class="logo-mark"></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="shop.html">Shop</a>
+      <a href="badges.html">Badges</a>
+      <a href="fitment.html" style="color:var(--text)">Fitment</a>
+      <a href="install.html">Install</a>
+      <a href="gallery.html">Gallery</a>
+    </nav>
+    <div class="nav-right">
+      <a href="contact.html" style="font-size:14.5px;color:var(--text-dim);" class="hide-mobile">Contact</a>
+      <div class="cart-btn"><span>Cart</span><span class="cart-count">0</span></div>
+      <button class="nav-toggle" id="navToggle">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<section style="padding-top:40px;">
+  <div class="wrap">
+    <div class="kicker">Will it fit?</div>
+    <h1 style="font-size:38px;">Full compatibility table.</h1>
+    <p style="max-width:540px;">If your door has the factory 2-pin puddle light, it plugs straight in. Search below or scan the full table.</p>
+    <div class="fitment-box" style="max-width:560px;margin-top:20px;">
+      <div class="field"><label>Your BMW</label>
+        <select id="fitmentSelect-page" onchange="selectFitment(this,'fitmentResult')">
+          <option value="" selected disabled>Choose your BMW&hellip;</option>
+          <optgroup label="F-Chassis (2012–2020ish)">
+          <option value="yes" data-codes="F87">2 Series (F87)</option>
+          <option value="yes" data-codes="F30 / F80">3 Series (F30 / F80)</option>
+          <option value="yes" data-codes="F32 / F82">4 Series (F32 / F82)</option>
+          <option value="yes" data-codes="F10 / F90">5 Series (F10 / F90)</option>
+          <option value="yes" data-codes="F92">8 Series (F92)</option>
+          <option value="yes" data-codes="F48">X1 (F48)</option>
+          <option value="yes" data-codes="F39">X2 (F39)</option>
+          <option value="yes" data-codes="F25">X3 (F25)</option>
+          <option value="yes" data-codes="F26">X4 (F26)</option>
+          <option value="yes" data-codes="F15">X5 (F15)</option>
+          <option value="yes" data-codes="F16">X6 (F16)</option>
+          </optgroup><optgroup label="G-Chassis (2019–current)">
+          <option value="yes" data-codes="G42 / G87">2 Series (G42 / G87)</option>
+          <option value="yes" data-codes="G20 / G80">3 Series (G20 / G80)</option>
+          <option value="yes" data-codes="G22 / G82">4 Series (G22 / G82)</option>
+          <option value="yes" data-codes="G30">5 Series (G30)</option>
+          <option value="yes" data-codes="U11">X1 (U11)</option>
+          <option value="yes" data-codes="U10">X2 (U10)</option>
+          <option value="yes" data-codes="G01">X3 (G01)</option>
+          <option value="yes" data-codes="G02">X4 (G02)</option>
+          <option value="yes" data-codes="G05">X5 (G05)</option>
+          <option value="yes" data-codes="G06">X6 (G06)</option>
+          <option value="yes" data-codes="G07">X7 (G07)</option>
+          </optgroup><optgroup label="E-Chassis (older)">
+          <option value="yes" data-codes="E90 / E92">3 Series (E90 / E92)</option>
+          <option value="yes" data-codes="E83">X3 (E83)</option>
+          <option value="yes" data-codes="E70">X5 (E70)</option>
+          <option value="yes" data-codes="E71 / E72">X6 (E71 / E72)</option>
+          </optgroup><optgroup label="Not yet supported">
+          <option value="no">1 Series</option>
+          <option value="no">6 Series</option>
+          <option value="no">7 Series</option>
+          <option value="no">Z4</option>
+          <option value="no">i4 / iX (electric)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="fitment-result" id="fitmentResult"></div>
+    </div>
+  </div>
+</section>
+<section class="section-border">
+  <div class="wrap">
+    <table class="fit-table">
+      <thead><tr><th>Model</th><th>Chassis codes</th><th>Generation</th><th>Status</th></tr></thead>
+      <tbody>
+      <tr><td>2 Series</td><td>F87</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>3 Series</td><td>F30 / F80</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>4 Series</td><td>F32 / F82</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>5 Series</td><td>F10 / F90</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>8 Series</td><td>F92</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X1</td><td>F48</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X2</td><td>F39</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X3</td><td>F25</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X4</td><td>F26</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X5</td><td>F15</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X6</td><td>F16</td><td style="color:var(--text-faint);">F-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>2 Series</td><td>G42 / G87</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>3 Series</td><td>G20 / G80</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>4 Series</td><td>G22 / G82</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>5 Series</td><td>G30</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X1</td><td>U11</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X2</td><td>U10</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X3</td><td>G01</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X4</td><td>G02</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X5</td><td>G05</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X6</td><td>G06</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X7</td><td>G07</td><td style="color:var(--text-faint);">G-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>3 Series</td><td>E90 / E92</td><td style="color:var(--text-faint);">E-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X3</td><td>E83</td><td style="color:var(--text-faint);">E-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X5</td><td>E70</td><td style="color:var(--text-faint);">E-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+<tr><td>X6</td><td>E71 / E72</td><td style="color:var(--text-faint);">E-Chassis</td><td style="color:var(--accent-blue);">Compatible</td></tr>
+      <tr><td>1 Series</td><td>&mdash;</td><td>&mdash;</td><td style="color:var(--text-faint);">Not yet</td></tr>
+<tr><td>6 Series</td><td>&mdash;</td><td>&mdash;</td><td style="color:var(--text-faint);">Not yet</td></tr>
+<tr><td>7 Series</td><td>&mdash;</td><td>&mdash;</td><td style="color:var(--text-faint);">Not yet</td></tr>
+<tr><td>Z4</td><td>&mdash;</td><td>&mdash;</td><td style="color:var(--text-faint);">Not yet</td></tr>
+<tr><td>i4 / iX (electric)</td><td>&mdash;</td><td>&mdash;</td><td style="color:var(--text-faint);">Not yet</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-size:13.5px;">Don't see your model? <a href="contact.html" style="color:var(--text);text-decoration:underline;">Message us</a> your exact chassis code and we'll confirm before you order.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="images/logo-full.png" alt="M///Division Lighting" style="width:180px;margin-bottom:16px;">
+        <p style="max-width:280px;">Plug-and-play LED puddle lights for BMW M and M Performance. Vancouver, BC, Canada.</p>
+        <p><a href="mailto:hello@mdivisionlighting.com">hello@mdivisionlighting.com</a></p>
+      </div>
+      <div><h4>Shop</h4><ul>
+        <li><a href="shop.html">Projection Lab</a></li>
+        <li><a href="badges.html">All badges</a></li>
+        <li><a href="fitment.html">Fitment</a></li>
+        <li><a href="cart.html">Cart</a></li>
+      </ul></div>
+      <div><h4>Support</h4><ul>
+        <li><a href="install.html">Install guide</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="shipping.html">Shipping &amp; pickup</a></li>
+        <li><a href="warranty.html">Warranty &amp; returns</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Real installs</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+      </ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 M///Division Lighting. Not affiliated with or endorsed by Bayerische Motoren Werke AG. BMW, M and related marks belong to their owners.</span>
+      <span>Secure checkout by Stripe</span>
+    </div>
+  </div>
+</footer>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head"><h3 style="margin:0;">Your Cart</h3><button onclick="closeCart()" style="background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;">&times;</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot"></div>
+</div>
+<div class="modal-overlay" id="checkoutOverlay">
+  <div class="modal-box" id="checkoutModal"></div>
+</div>
+
+<script src="js/site.js"></script>
+</body>
+</html>
