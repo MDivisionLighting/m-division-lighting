@@ -134,9 +134,9 @@ function closeAllModals(){
 const BACKEND_URL = '/api/create-checkout-session';
 const SPOTS_URL = '/api/install-spots';
 const REVIEWS_URL = '/api/reviews';
-const NA_COUNTRIES = ['United States','Canada','Mexico'];
-const COUNTRY_CODES = { 'United States':'US','Canada':'CA','Mexico':'MX','United Kingdom':'GB','Germany':'DE','France':'FR','Australia':'AU','Other':'XX' };
-const INTL_RATES = { 'United Kingdom':12, 'Germany':14, 'Australia':18, 'France':14, 'Other':20 };
+// We ship to Canada and the US only, always free.
+const COUNTRY_CODES = { 'United States':'US', 'Canada':'CA' };
+const shippingFor = () => 0;
 window._shipData = { pickup:false, freeInstallOptIn:false, country:'United States' };
 
 function openCheckout(){
@@ -177,7 +177,7 @@ function updateShipEstimate(){
   const pickup = window._shipData.pickup;
   const sub = cartSubtotal();
   let ship = 0;
-  if (!pickup){ ship = NA_COUNTRIES.includes(country) ? 0 : (INTL_RATES[country] || 20); }
+  if (!pickup){ ship = shippingFor(country); }
   const box = document.getElementById('shipEstimateBox');
   if (box){
     box.innerHTML = `<div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-dim);margin-top:6px;">
@@ -206,9 +206,9 @@ function renderCheckoutStep1(){
       <div class="field">
         <label>Country</label>
         <select id="ck-country" onchange="updateShipEstimate()">
-          <option>United States</option><option>Canada</option><option>Mexico</option>
-          <option>United Kingdom</option><option>Germany</option><option>France</option><option>Australia</option><option>Other</option>
+          <option>United States</option><option>Canada</option>
         </select>
+        <div style="font-size:12px;color:var(--text-faint);margin-top:6px;">We currently ship to Canada and the US. Free, with no duties or customs fees at delivery.</div>
       </div>
     </div>
     <div id="installOffer" style="display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;">
@@ -241,7 +241,7 @@ function renderCheckoutStep2(){
   const sub = cartSubtotal();
   const pickup = window._shipData.pickup;
   const country = window._shipData.country || 'United States';
-  const ship = pickup ? 0 : (NA_COUNTRIES.includes(country) ? 0 : (INTL_RATES[country] || 20));
+  const ship = pickup ? 0 : shippingFor(country);
   const itemsHtml = cart.map(i => `<div style="display:flex;justify-content:space-between;font-size:13.5px;color:var(--text-dim);margin-bottom:6px;">
       <span>${KIT_LABELS[i.key]||i.key} &times; ${i.qty} &mdash; ${badgeByKey(i.badge).name}</span>
       <span>$${((PRICES[i.key]||0)*i.qty).toFixed(2)}</span></div>`).join('');
@@ -274,7 +274,7 @@ async function proceedToPayment(){
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
         cart,
-        country: COUNTRY_CODES[window._shipData.country] || 'XX',
+        country: COUNTRY_CODES[window._shipData.country] || 'US',
         shipData: window._shipData,
       }),
     });

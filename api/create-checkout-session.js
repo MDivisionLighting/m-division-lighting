@@ -18,7 +18,9 @@ const LAUNCH_END = new Date("2026-10-19T12:00:00-07:00").getTime();   // 7 days 
 const launchActive = () => { const now = Date.now(); return now >= LAUNCH_START && now < LAUNCH_END; };
 
 // Prices in cents — source of truth lives on the server, not the browser.
-const PRICES_CENTS = launchActive()
+// Computed per request (not once at startup), so a warm server instance
+// switches to/from launch pricing exactly at the deadline.
+const currentPricesCents = () => launchActive()
   ? { '2pc': 2999, '4pc': 4999 }   // launch pricing
   : { '2pc': 3999, '4pc': 5999 };  // regular pricing
 const PRODUCT_LABELS = {
@@ -26,8 +28,11 @@ const PRODUCT_LABELS = {
   '4pc': '4-Piece Puddle Light Kit',
 };
 
-const NA_COUNTRIES = ['US', 'CA', 'MX'];
-const INTL_SHIPPING_CENTS = { GB: 1200, DE: 1400, FR: 1400, AU: 1800, DEFAULT: 2000 };
+// We only ship to Canada and the US (free). Stripe's address form is
+// limited to these two, so no other destination can get through checkout.
+const SHIP_COUNTRIES = ['CA', 'US'];
+const SITE_ORIGIN = 'https://www.mdivisionlighting.com';
+const MAX_QTY_PER_LINE = 10;
 
 export default async function handler(req, res) {
   // CORS: only your own storefront domain may call this endpoint.
@@ -43,15 +48,17 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Cart is empty' });
     }
 
+    const PRICES_CENTS = currentPricesCents();
     const line_items = cart.map((item) => {
       const unit_amount = PRICES_CENTS[item.key];
       if (!unit_amount) throw new Error(`Unknown product key: ${item.key}`);
-      const qty = Math.max(1, parseInt(item.qty, 10) || 1);
+      const qty = Math.min(MAX_QTY_PER_LINE, Math.max(1, parseInt(item.qty, 10) || 1));
+      const badge = String(item.badge || 'Standard').slice(0, 60);
       return {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: `${PRODUCT_LABELS[item.key]} — ${item.badge || 'Standard'}`,
+            name: `${PRODUCT_LABELS[item.key]} — ${badge}`,
           },
           unit_amount,
         },
@@ -60,13 +67,13 @@ export default async function handler(req, res) {
     });
 
     const isPickup = !!(shipData && shipData.pickup);
-    const isNA = NA_COUNTRIES.includes(country);
-    const shippingCents = isPickup ? 0 : isNA ? 0 : (INTL_SHIPPING_CENTS[country] ?? INTL_SHIPPING_CENTS.DEFAULT);
+    if (!isPickup && country && !SHIP_COUNTRIES.includes(country)) {
+      return res.status(400).json({ error: 'We currently ship to Canada and the US only.' });
+    }
+    const shippingCents = 0;
     const shippingLabel = isPickup
       ? 'Local pickup (Vancouver, BC)'
-      : isNA
-      ? 'Free shipping (North America)'
-      : 'International shipping';
+      : 'Free shipping (Canada & US)';
 
     // Re-check spots remaining server-side right before creating the
     // session — the front end already hides the checkbox at 0 remaining,
@@ -93,7 +100,7 @@ export default async function handler(req, res) {
       // the site's own address fields are just for the shipping estimate).
       // Local pickup orders skip this since there's nothing to ship.
       ...(isPickup ? {} : {
-        shipping_address_collection: { allowed_countries: ['US', 'CA', 'MX', 'GB', 'DE', 'FR', 'AU'] },
+        shipping_address_collection: { allowed_countries: SHIP_COUNTRIES },
       }),
       shipping_options: [
         {
@@ -113,8 +120,8 @@ export default async function handler(req, res) {
         customer_name: shipData && shipData.name ? String(shipData.name).slice(0, 100) : '',
         customer_phone: shipData && shipData.phone ? String(shipData.phone).slice(0, 40) : '',
       },
-      success_url: `${req.headers.origin}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/?canceled=true`,
+      success_url: `${SITE_ORIGIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${SITE_ORIGIN}/?canceled=true`,
     });
 
     return res.status(200).json({ url: session.url });
